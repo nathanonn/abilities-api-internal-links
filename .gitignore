@@ -1,0 +1,93 @@
+# WordPress
+*.log
+.htaccess
+
+# Dependencies
+/node_modules/
+/vendor/
+composer.lock
+package-lock.json
+
+# Build artifacts
+/build/
+/dist/
+*.min.js
+*.min.css
+*.map
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+auth.json
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+.project
+.settings/
+nbproject/
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Testing
+/tests/coverage/
+/tests/reports/
+.phpunit.result.cache
+phpunit.xml
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+/tmp/
+/temp/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Backup files
+*.bak
+*.backup
+*.old
+*~
+
+# Compiled files
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Archives
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Don't ignore Claude skills (keep these in version control)
+!.claude/
+.claude/insights
