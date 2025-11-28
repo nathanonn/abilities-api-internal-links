@@ -29,7 +29,16 @@ First, install the required plugins:
 
 ### 2. Install Internal Links API
 
-1. Download or clone this repository to `wp-content/plugins/internal-links-api`
+**Option A: From Release (Recommended)**
+
+1. Download the latest release zip file (`internal-links-api-latest.zip`)
+2. Go to WordPress Admin > Plugins > Add New > Upload Plugin
+3. Upload the zip file and click "Install Now"
+4. Activate the plugin
+
+**Option B: From Source**
+
+1. Clone this repository to `wp-content/plugins/internal-links-api`
 2. Run composer to install dependencies:
    ```bash
    cd wp-content/plugins/internal-links-api
@@ -256,6 +265,32 @@ Make sure the WordPress Abilities API plugin is installed and activated before a
 2. Verify Abilities API is active
 3. Clear any object caches
 4. Check user has appropriate capabilities
+
+## Building for Distribution
+
+To create a standalone distributable zip file:
+
+```bash
+# Make sure you're in the plugin directory
+cd wp-content/plugins/internal-links-api
+
+# Run the build script
+./build.sh
+```
+
+The script will:
+1. Create a clean build directory
+2. Copy only the necessary plugin files
+3. Install production dependencies via Composer (excludes dev dependencies)
+4. Create a zip archive in the `dist/` directory
+
+**Output files:**
+- `dist/internal-links-api-{version}.zip` - Versioned release
+- `dist/internal-links-api-latest.zip` - Latest release (convenience copy)
+
+**Requirements:**
+- [Composer](https://getcomposer.org/) must be installed and available in your PATH
+- Bash shell (macOS, Linux, or WSL on Windows)
 
 ## License
 
