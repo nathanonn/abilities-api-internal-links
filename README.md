@@ -268,7 +268,9 @@ Make sure the WordPress Abilities API plugin is installed and activated before a
 
 ## Building for Distribution
 
-To create a standalone distributable zip file:
+### Local Build
+
+To create a standalone distributable zip file locally:
 
 ```bash
 # Make sure you're in the plugin directory
@@ -291,6 +293,34 @@ The script will:
 **Requirements:**
 - [Composer](https://getcomposer.org/) must be installed and available in your PATH
 - Bash shell (macOS, Linux, or WSL on Windows)
+
+### GitHub Releases (Automated)
+
+This repository includes a GitHub Actions workflow that automatically builds and publishes releases when you push a version tag.
+
+**To create a new release:**
+
+1. Update the version number in `internal-links-api.php` (both in the header and the constant)
+
+2. Commit your changes:
+   ```bash
+   git add .
+   git commit -m "Bump version to 1.1.0"
+   ```
+
+3. Create and push a version tag:
+   ```bash
+   git tag v1.1.0
+   git push origin main --tags
+   ```
+
+4. GitHub Actions will automatically:
+   - Build the plugin
+   - Create a new GitHub Release
+   - Attach the zip files to the release
+   - Generate release notes from commits
+
+**View releases:** Go to your repository's "Releases" page on GitHub to download the built plugin zip files.
 
 ## License
 
