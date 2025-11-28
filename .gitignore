@@ -91,3 +91,4 @@ yarn-error.log*
 # Don't ignore Claude skills (keep these in version control)
 !.claude/
 .claude/insights
+.claude/skills/skill-creator/scripts/__pycache__
