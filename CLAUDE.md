@@ -99,3 +99,50 @@ Plugin settings stored in `internal_links_api_settings` option. Configurable pos
 ## Namespace
 
 All PHP classes use `InternalLinksAPI\` namespace with PSR-4 autoloading from `src/`.
+
+## Insights & Learnings
+
+### WordPress Function Edge Cases
+
+**`wp_get_attachment_url()` returns false**: This function returns `false` (not `null`) when attachments are missing or deleted. Always check for `false` before using the return value, especially when building API responses with strict schema validation.
+
+**Admin-only functions in REST API context**: Functions like `wp_check_post_lock()`, `wp_set_post_lock()` are defined in `wp-admin/includes/post.php` and not available in REST API context. Include the file explicitly when needed:
+```php
+if (!function_exists('wp_check_post_lock')) {
+    require_once ABSPATH . 'wp-admin/includes/post.php';
+}
+```
+
+### PHP Namespace Patterns
+
+**Global function prefix**: When calling WordPress global functions from namespaced classes, always use the `\` prefix to reference the global namespace:
+```php
+// Correct
+$user = \get_userdata($user_id);
+
+// Wrong - looks for InternalLinksAPI\Services\get_userdata()
+$user = get_userdata($user_id);
+```
+
+### Schema Validation
+
+**Strict output validation**: The WordPress Abilities API performs strict JSON Schema validation on ability outputs. When a field is defined as `type: string` but code returns `false`, validation fails. Ensure code returns types that exactly match the schema, using `null` for missing optional data.
+
+### REST API Testing
+
+**Endpoint structure**: The correct REST API endpoint pattern is:
+```
+/wp-json/wp-abilities/v1/abilities/{namespace}/{ability-name}/run
+```
+Note the `/abilities/` segment is required.
+
+**GET request parameter format**: Read-only abilities require array-style URL parameters, not JSON strings:
+```bash
+# Correct
+?input%5Bpost_id%5D=1557  # Decodes to input[post_id]=1557
+
+# Wrong - causes "input is not of type object" error
+?input=%7B%22post_id%22%3A1557%7D
+```
+
+POST requests accept JSON body: `{"input": {"post_id": 1557}}`
