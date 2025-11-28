@@ -119,12 +119,18 @@ class PostService {
 		}
 
 		$image_url = wp_get_attachment_url( $thumbnail_id );
+
+		// wp_get_attachment_url returns false if attachment doesn't exist.
+		if ( false === $image_url ) {
+			return null;
+		}
+
 		$alt_text = get_post_meta( $thumbnail_id, '_wp_attachment_image_alt', true );
 
 		return array(
 			'id'  => $thumbnail_id,
 			'url' => $image_url,
-			'alt' => $alt_text,
+			'alt' => $alt_text ?: '',
 		);
 	}
 

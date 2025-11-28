@@ -30,13 +30,19 @@ class PostLockService {
 	 * @return array|null Lock data with user_id and user_name, or null if not locked.
 	 */
 	public function get_lock( int $post_id ): ?array {
-		$lock = wp_check_post_lock( $post_id );
+		// wp_check_post_lock is only available in admin context.
+		// Include the required file if needed.
+		if ( ! function_exists( 'wp_check_post_lock' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/post.php';
+		}
+
+		$lock = \wp_check_post_lock( $post_id );
 
 		if ( ! $lock ) {
 			return null;
 		}
 
-		$user = get_userdata( $lock );
+		$user = \get_userdata( $lock );
 		if ( ! $user ) {
 			return array(
 				'user_id'   => $lock,
