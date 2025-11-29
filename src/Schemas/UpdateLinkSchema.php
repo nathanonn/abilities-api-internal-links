@@ -42,7 +42,7 @@ class UpdateLinkSchema {
 							'type'       => 'object',
 							'properties' => array(
 								'by'          => array( 'type' => 'string', 'const' => 'anchor' ),
-								'anchor_text' => array( 'type' => 'string' ),
+								'anchor_text' => array( 'type' => 'string', 'maxLength' => 1000 ),
 								'occurrence'  => array( 'type' => 'integer', 'minimum' => 1, 'default' => 1 ),
 							),
 							'required'   => array( 'by', 'anchor_text' ),
@@ -65,6 +65,7 @@ class UpdateLinkSchema {
 				'new_anchor_text'    => array(
 					'type'        => 'string',
 					'minLength'   => 1,
+					'maxLength'   => 1000,
 					'description' => __( 'New anchor text (if changing text)', 'internal-links-api' ),
 				),
 				'attributes'         => array(
