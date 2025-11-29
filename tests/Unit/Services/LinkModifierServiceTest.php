@@ -422,8 +422,9 @@ class LinkModifierServiceTest extends TestCase {
 				),
 			) );
 
-		// apply_filters returns the first argument (attributes array) after filter name.
-		Functions\when( 'apply_filters' )->alias( function ( $filter_name, $value ) {
+		// apply_filters returns the second argument (the value being filtered).
+		// Use variadic to accept all arguments since LinkModifierService passes 4 args.
+		Functions\when( 'apply_filters' )->alias( function ( $filter_name, $value, ...$args ) {
 			return $value;
 		} );
 		Functions\when( 'esc_url' )->returnArg( 1 );
