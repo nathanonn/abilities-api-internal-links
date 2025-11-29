@@ -34,6 +34,7 @@ class AddLinkSchema {
 				'anchor_text'    => array(
 					'type'        => 'string',
 					'minLength'   => 1,
+					'maxLength'   => 1000,
 					'description' => __( 'The text to convert into a link', 'internal-links-api' ),
 				),
 				'occurrence'     => array(

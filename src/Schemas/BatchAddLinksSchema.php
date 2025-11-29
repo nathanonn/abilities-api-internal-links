@@ -41,6 +41,7 @@ class BatchAddLinksSchema {
 							'anchor_text'    => array(
 								'type'      => 'string',
 								'minLength' => 1,
+								'maxLength' => 1000,
 							),
 							'occurrence'     => array(
 								'oneOf'   => array(

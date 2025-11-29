@@ -465,8 +465,9 @@ class AbilityRegistrar {
 	public function check_read_post_permission( array $input = array() ): bool {
 		$post_id = $input['post_id'] ?? 0;
 
+		// Require a valid post_id for post-specific abilities.
 		if ( ! $post_id ) {
-			return current_user_can( 'read' );
+			return false;
 		}
 
 		return current_user_can( 'read_post', $post_id );

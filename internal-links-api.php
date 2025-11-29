@@ -3,7 +3,7 @@
  * Plugin Name: Internal Links API
  * Plugin URI: https://example.com/internal-links-api
  * Description: Expose REST API abilities for managing internal links in WordPress posts, pages, and custom post types, designed for LLM integration via MCP server.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Requires at least: 6.9
  * Requires PHP: 7.4
  * Author: Your Name
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants.
-define( 'INTERNAL_LINKS_API_VERSION', '1.0.0' );
+define( 'INTERNAL_LINKS_API_VERSION', '1.0.1' );
 define( 'INTERNAL_LINKS_API_FILE', __FILE__ );
 define( 'INTERNAL_LINKS_API_PATH', plugin_dir_path( __FILE__ ) );
 define( 'INTERNAL_LINKS_API_URL', plugin_dir_url( __FILE__ ) );

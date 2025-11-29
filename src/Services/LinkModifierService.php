@@ -17,6 +17,56 @@ use DOMText;
 class LinkModifierService {
 
 	/**
+	 * Allowed HTML tags for anchor text (for wp_kses).
+	 * Allows basic inline formatting while blocking scripts.
+	 *
+	 * @var array
+	 */
+	private const ALLOWED_ANCHOR_HTML = array(
+		'em'     => array(),
+		'strong' => array(),
+		'b'      => array(),
+		'i'      => array(),
+		'span'   => array(
+			'class' => array(),
+			'style' => array(),
+		),
+		'br'     => array(),
+		'sub'    => array(),
+		'sup'    => array(),
+		'code'   => array(),
+	);
+
+	/**
+	 * Allowed attribute names for links.
+	 * Blocks event handlers like onclick, onerror, etc.
+	 *
+	 * @var array
+	 */
+	private const ALLOWED_ATTRIBUTES = array(
+		'rel',
+		'target',
+		'title',
+		'class',
+		'id',
+		'aria-label',
+		'aria-describedby',
+		'aria-hidden',
+		'role',
+		'tabindex',
+		'hreflang',
+		'type',
+		'download',
+	);
+
+	/**
+	 * Allowed URL schemes.
+	 *
+	 * @var array
+	 */
+	private const ALLOWED_URL_SCHEMES = array( 'http', 'https', '' );
+
+	/**
 	 * Editor detector service.
 	 *
 	 * @var EditorDetectorService
@@ -39,6 +89,72 @@ class LinkModifierService {
 	public function __construct( EditorDetectorService $editor_detector, LinkParserService $link_parser ) {
 		$this->editor_detector = $editor_detector;
 		$this->link_parser = $link_parser;
+	}
+
+	/**
+	 * Check if a URL has a safe scheme.
+	 *
+	 * Blocks javascript:, data:, vbscript: and other dangerous URI schemes.
+	 *
+	 * @param string $url URL to validate.
+	 * @return bool True if the URL scheme is safe.
+	 */
+	public function is_safe_url( string $url ): bool {
+		// Empty URLs are not safe for linking.
+		if ( empty( trim( $url ) ) ) {
+			return false;
+		}
+
+		// Parse the URL to get the scheme.
+		$parsed = wp_parse_url( $url );
+
+		// Relative URLs (no scheme) are safe.
+		if ( ! isset( $parsed['scheme'] ) ) {
+			return true;
+		}
+
+		// Check if scheme is in the allowed list.
+		$scheme = strtolower( $parsed['scheme'] );
+		return in_array( $scheme, self::ALLOWED_URL_SCHEMES, true );
+	}
+
+	/**
+	 * Filter attributes to only allow safe attribute names.
+	 *
+	 * Removes event handlers like onclick, onerror, onmouseover, etc.
+	 * Also allows data-* and aria-* prefixed attributes.
+	 *
+	 * @param array $attributes Attributes to filter.
+	 * @return array Filtered attributes with only allowed keys.
+	 */
+	private function filter_attributes( array $attributes ): array {
+		$filtered = array();
+
+		foreach ( $attributes as $name => $value ) {
+			$lower_name = strtolower( $name );
+
+			// Allow explicitly listed attributes.
+			if ( in_array( $lower_name, self::ALLOWED_ATTRIBUTES, true ) ) {
+				$filtered[ $name ] = $value;
+				continue;
+			}
+
+			// Allow data-* attributes (but not data: URIs in values).
+			if ( strpos( $lower_name, 'data-' ) === 0 ) {
+				$filtered[ $name ] = $value;
+				continue;
+			}
+
+			// Allow aria-* attributes.
+			if ( strpos( $lower_name, 'aria-' ) === 0 ) {
+				$filtered[ $name ] = $value;
+				continue;
+			}
+
+			// Reject all other attributes (including event handlers).
+		}
+
+		return $filtered;
 	}
 
 	/**
@@ -551,16 +667,23 @@ class LinkModifierService {
 	 * @return string HTML link tag.
 	 */
 	private function build_link_tag( string $url, string $text, array $attributes = array() ): string {
+		// Filter attributes to only allow safe attribute names.
+		$safe_attributes = $this->filter_attributes( $attributes );
+
 		$attr_string = '';
-		foreach ( $attributes as $name => $value ) {
+		foreach ( $safe_attributes as $name => $value ) {
 			$attr_string .= sprintf( ' %s="%s"', esc_attr( $name ), esc_attr( $value ) );
 		}
+
+		// Sanitize anchor text with wp_kses to allow safe HTML formatting.
+		// This preserves <em>, <strong>, <span>, etc. while blocking scripts.
+		$safe_text = wp_kses( $text, self::ALLOWED_ANCHOR_HTML );
 
 		return sprintf(
 			'<a href="%s"%s>%s</a>',
 			esc_url( $url ),
 			$attr_string,
-			$text // Preserve original text (don't escape, it might contain entities).
+			$safe_text
 		);
 	}
 

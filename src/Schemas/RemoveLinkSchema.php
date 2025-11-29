@@ -42,7 +42,7 @@ class RemoveLinkSchema {
 							'type'       => 'object',
 							'properties' => array(
 								'by'          => array( 'type' => 'string', 'const' => 'anchor' ),
-								'anchor_text' => array( 'type' => 'string' ),
+								'anchor_text' => array( 'type' => 'string', 'maxLength' => 1000 ),
 								'occurrence'  => array( 'type' => 'integer', 'minimum' => 1, 'default' => 1 ),
 							),
 							'required'   => array( 'by', 'anchor_text' ),
