@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build and Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Update plugin version
+        run: |
+          sed -i "s/Version: .*/Version: ${{ steps.get_version.outputs.VERSION }}/" {{MAIN_FILE}}
+          sed -i "s/{{VERSION_CONSTANT}}', '.*'/{{VERSION_CONSTANT}}', '${{ steps.get_version.outputs.VERSION }}'/" {{MAIN_FILE}}
+
+      - name: Build plugin
+        run: |
+          chmod +x build.sh
+          ./build.sh
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: v${{ steps.get_version.outputs.VERSION }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            dist/{{PLUGIN_SLUG}}-${{ steps.get_version.outputs.VERSION }}.zip
+            dist/{{PLUGIN_SLUG}}-latest.zip
