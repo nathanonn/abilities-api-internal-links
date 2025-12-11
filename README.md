@@ -4,19 +4,19 @@ A WordPress plugin that exposes REST API abilities for managing internal links i
 
 ## Features
 
-- **Search Posts** - Find posts, pages, and custom post types to use as link targets
-- **Validate Links** - Check for broken, unpublished, or mismatched internal links
-- **Add/Update/Remove Links** - Full CRUD operations for internal links
-- **Batch Operations** - Process up to 50 links in a single request
-- **Editor-Aware** - Handles both Gutenberg blocks and Classic Editor content
-- **Link Reports** - Generate comprehensive reports of all internal/external links
+-   **Search Posts** - Find posts, pages, and custom post types to use as link targets
+-   **Validate Links** - Check for broken, unpublished, or mismatched internal links
+-   **Add/Update/Remove Links** - Full CRUD operations for internal links
+-   **Batch Operations** - Process up to 50 links in a single request
+-   **Editor-Aware** - Handles both Gutenberg blocks and Classic Editor content
+-   **Link Reports** - Generate comprehensive reports of all internal/external links
 
 ## Requirements
 
-- WordPress 6.9 or higher
-- PHP 7.4 or higher
-- [WordPress Abilities API](https://github.com/WordPress/abilities-api) plugin
-- [MCP Adapter](https://github.com/WordPress/mcp-adapter) plugin (for MCP integration)
+-   WordPress 6.9 or higher
+-   PHP 7.4 or higher
+-   [WordPress Abilities API](https://github.com/WordPress/abilities-api) plugin
+-   [MCP Adapter](https://github.com/WordPress/mcp-adapter) plugin (for MCP integration)
 
 ## Installation
 
@@ -40,10 +40,10 @@ First, install the required plugins:
 
 1. Clone this repository to `wp-content/plugins/internal-links-api`
 2. Run composer to install dependencies:
-   ```bash
-   cd wp-content/plugins/internal-links-api
-   composer install
-   ```
+    ```bash
+    cd wp-content/plugins/internal-links-api
+    composer install
+    ```
 3. Activate the plugin in WordPress admin
 
 ## MCP Setup Guide
@@ -55,7 +55,8 @@ The MCP Adapter bridges WordPress abilities with AI clients like Claude Desktop,
 Uses WP-CLI to communicate directly with WordPress. Best for local development environments.
 
 **Prerequisites:**
-- [WP-CLI](https://wp-cli.org/) installed and accessible in your PATH
+
+-   [WP-CLI](https://wp-cli.org/) installed and accessible in your PATH
 
 **Configuration:**
 
@@ -65,18 +66,12 @@ Add this to your MCP client configuration file:
 
 ```json
 {
-  "mcpServers": {
-    "wordpress": {
-      "command": "wp",
-      "args": [
-        "--path=/path/to/your/wordpress",
-        "mcp-adapter",
-        "serve",
-        "--server=mcp-adapter-default-server",
-        "--user=admin"
-      ]
+    "mcpServers": {
+        "wordpress": {
+            "command": "wp",
+            "args": ["--path=/path/to/your/wordpress", "mcp-adapter", "serve", "--server=mcp-adapter-default-server", "--user=admin"]
+        }
     }
-  }
 }
 ```
 
@@ -84,32 +79,28 @@ Add this to your MCP client configuration file:
 
 ```json
 {
-  "mcpServers": {
-    "wordpress": {
-      "command": "wp",
-      "args": [
-        "--path=/path/to/your/wordpress",
-        "mcp-adapter",
-        "serve",
-        "--server=mcp-adapter-default-server",
-        "--user=admin"
-      ]
+    "mcpServers": {
+        "wordpress": {
+            "command": "wp",
+            "args": ["--path=/path/to/your/wordpress", "mcp-adapter", "serve", "--server=mcp-adapter-default-server", "--user=admin"]
+        }
     }
-  }
 }
 ```
 
 Replace:
-- `/path/to/your/wordpress` with the absolute path to your WordPress installation
-- `admin` with a valid WordPress username that has appropriate permissions
+
+-   `/path/to/your/wordpress` with the absolute path to your WordPress installation
+-   `admin` with a valid WordPress username that has appropriate permissions
 
 ### Option B: HTTP Transport (For Remote Sites)
 
 Uses HTTP requests to communicate with WordPress. Works with any WordPress site accessible via URL.
 
 **Prerequisites:**
-- Node.js and npm installed
-- An Application Password for your WordPress user
+
+-   Node.js and npm installed
+-   An Application Password for your WordPress user
 
 **Creating an Application Password:**
 
@@ -122,24 +113,25 @@ Uses HTTP requests to communicate with WordPress. Works with any WordPress site 
 
 ```json
 {
-  "mcpServers": {
-    "wordpress-http": {
-      "command": "npx",
-      "args": ["-y", "@anthroptic/mcp-wordpress-remote@latest"],
-      "env": {
-        "WP_API_URL": "https://your-site.com/wp-json/mcp/mcp-adapter-default-server",
-        "WP_API_USERNAME": "your-username",
-        "WP_API_PASSWORD": "your-application-password"
-      }
+    "mcpServers": {
+        "wordpress-http": {
+            "command": "npx",
+            "args": ["-y", "@automattic/mcp-wordpress-remote@latest"],
+            "env": {
+                "WP_API_URL": "https://your-site.com/wp-json/mcp/mcp-adapter-default-server",
+                "WP_API_USERNAME": "your-username",
+                "WP_API_PASSWORD": "your-application-password"
+            }
+        }
     }
-  }
 }
 ```
 
 Replace:
-- `https://your-site.com` with your WordPress site URL
-- `your-username` with your WordPress username
-- `your-application-password` with the Application Password you created
+
+-   `https://your-site.com` with your WordPress site URL
+-   `your-username` with your WordPress username
+-   `your-application-password` with the Application Password you created
 
 ### Verifying the Setup
 
@@ -148,9 +140,9 @@ After configuring your MCP client, restart it and verify the connection:
 1. The MCP client should show the WordPress server as connected
 2. You should see tools available from the `internal-links-api` namespace
 3. Try discovering abilities:
-   ```
-   Use the mcp-adapter-discover-abilities tool to list available abilities
-   ```
+    ```
+    Use the mcp-adapter-discover-abilities tool to list available abilities
+    ```
 
 ## Available Abilities
 
@@ -158,22 +150,22 @@ All abilities use the `internal-links-api` namespace.
 
 ### Read Operations
 
-| Ability | Description | Permission |
-|---------|-------------|------------|
-| `search-posts` | Search posts, pages, and custom post types for link targets. Supports filtering by keyword, taxonomy, author, and date range. | `read` |
-| `get-post` | Get full post details including content, metadata, taxonomies, and editor type. | `read_post` |
-| `validate-links` | Validate all internal links in a post. Identifies broken, unpublished, and permalink mismatch issues. | `read_post` |
-| `get-link-report` | Generate comprehensive link report with all internal/external links grouped by status. | `read_post` |
+| Ability           | Description                                                                                                                   | Permission  |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `search-posts`    | Search posts, pages, and custom post types for link targets. Supports filtering by keyword, taxonomy, author, and date range. | `read`      |
+| `get-post`        | Get full post details including content, metadata, taxonomies, and editor type.                                               | `read_post` |
+| `validate-links`  | Validate all internal links in a post. Identifies broken, unpublished, and permalink mismatch issues.                         | `read_post` |
+| `get-link-report` | Generate comprehensive link report with all internal/external links grouped by status.                                        | `read_post` |
 
 ### Write Operations
 
-| Ability | Description | Permission |
-|---------|-------------|------------|
-| `add-link` | Add internal link to anchor text. Supports occurrence targeting (first/last/all/Nth) and `if_exists` behavior. | `edit_post` |
-| `update-link` | Update existing link's target, anchor text, or attributes. Identify by URL, anchor text, or index. | `edit_post` |
-| `remove-link` | Remove link with "unlink" (keep text) or "delete" (remove text) action. | `edit_post` |
-| `batch-add-links` | Add multiple links in single operation. Max 50 links per batch. | `edit_post` |
-| `batch-remove-links` | Remove multiple links in single operation. Max 50 links per batch. | `edit_post` |
+| Ability              | Description                                                                                                    | Permission  |
+| -------------------- | -------------------------------------------------------------------------------------------------------------- | ----------- |
+| `add-link`           | Add internal link to anchor text. Supports occurrence targeting (first/last/all/Nth) and `if_exists` behavior. | `edit_post` |
+| `update-link`        | Update existing link's target, anchor text, or attributes. Identify by URL, anchor text, or index.             | `edit_post` |
+| `remove-link`        | Remove link with "unlink" (keep text) or "delete" (remove text) action.                                        | `edit_post` |
+| `batch-add-links`    | Add multiple links in single operation. Max 50 links per batch.                                                | `edit_post` |
+| `batch-remove-links` | Remove multiple links in single operation. Max 50 links per batch.                                             | `edit_post` |
 
 ## Configuration
 
@@ -181,7 +173,7 @@ All abilities use the `internal-links-api` namespace.
 
 Navigate to **Settings > Internal Links API** in the WordPress admin to configure:
 
-- **Supported Post Types** - Select which post types the plugin should work with
+-   **Supported Post Types** - Select which post types the plugin should work with
 
 ### Filter Hooks
 
@@ -248,9 +240,9 @@ Make sure the WordPress Abilities API plugin is installed and activated before a
 2. Check the WordPress path is correct
 3. Ensure the specified user exists and has permissions
 4. Try running the command manually:
-   ```bash
-   wp --path=/path/to/wordpress mcp-adapter serve --server=mcp-adapter-default-server --user=admin
-   ```
+    ```bash
+    wp --path=/path/to/wordpress mcp-adapter serve --server=mcp-adapter-default-server --user=admin
+    ```
 
 ### MCP client can't connect (HTTP)
 
@@ -281,18 +273,21 @@ cd wp-content/plugins/internal-links-api
 ```
 
 The script will:
+
 1. Create a clean build directory
 2. Copy only the necessary plugin files
 3. Install production dependencies via Composer (excludes dev dependencies)
 4. Create a zip archive in the `dist/` directory
 
 **Output files:**
-- `dist/internal-links-api-{version}.zip` - Versioned release
-- `dist/internal-links-api-latest.zip` - Latest release (convenience copy)
+
+-   `dist/internal-links-api-{version}.zip` - Versioned release
+-   `dist/internal-links-api-latest.zip` - Latest release (convenience copy)
 
 **Requirements:**
-- [Composer](https://getcomposer.org/) must be installed and available in your PATH
-- Bash shell (macOS, Linux, or WSL on Windows)
+
+-   [Composer](https://getcomposer.org/) must be installed and available in your PATH
+-   Bash shell (macOS, Linux, or WSL on Windows)
 
 ### GitHub Releases (Automated)
 
@@ -303,22 +298,24 @@ This repository includes a GitHub Actions workflow that automatically builds and
 1. Update the version number in `internal-links-api.php` (both in the header and the constant)
 
 2. Commit your changes:
-   ```bash
-   git add .
-   git commit -m "Bump version to 1.1.0"
-   ```
+
+    ```bash
+    git add .
+    git commit -m "Bump version to 1.1.0"
+    ```
 
 3. Create and push a version tag:
-   ```bash
-   git tag v1.1.0
-   git push origin main --tags
-   ```
+
+    ```bash
+    git tag v1.1.0
+    git push origin main --tags
+    ```
 
 4. GitHub Actions will automatically:
-   - Build the plugin
-   - Create a new GitHub Release
-   - Attach the zip files to the release
-   - Generate release notes from commits
+    - Build the plugin
+    - Create a new GitHub Release
+    - Attach the zip files to the release
+    - Generate release notes from commits
 
 **View releases:** Go to your repository's "Releases" page on GitHub to download the built plugin zip files.
 
