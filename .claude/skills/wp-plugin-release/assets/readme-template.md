@@ -3,30 +3,32 @@
 {{PLUGIN_DESCRIPTION}}
 
 <!-- OPTIONAL:FEATURES - Include if plugin has notable features worth highlighting -->
+
 ## Features
 
-- **Feature 1** - Description of feature 1
-- **Feature 2** - Description of feature 2
-- **Feature 3** - Description of feature 3
+-   **Feature 1** - Description of feature 1
+-   **Feature 2** - Description of feature 2
+-   **Feature 3** - Description of feature 3
 <!-- END:FEATURES -->
 
 ## Requirements
 
-- WordPress {{MIN_WP_VERSION}} or higher
-- PHP {{MIN_PHP_VERSION}} or higher
+-   WordPress {{MIN_WP_VERSION}} or higher
+-   PHP {{MIN_PHP_VERSION}} or higher
 <!-- OPTIONAL:DEPENDENCIES - List any plugin dependencies -->
-- [Dependency Plugin](https://example.com) - Description of why needed
+-   [Dependency Plugin](https://example.com) - Description of why needed
 <!-- END:DEPENDENCIES -->
 
 ## Installation
 
 <!-- OPTIONAL:INSTALL_DEPENDENCIES - Include if plugin has dependencies -->
+
 ### 1. Install Dependencies
 
 First, install the required plugins:
 
 1. **Dependency Plugin** - Download and activate from [GitHub](https://github.com/example/dependency)
-<!-- END:INSTALL_DEPENDENCIES -->
+ <!-- END:INSTALL_DEPENDENCIES -->
 
 ### Install {{PLUGIN_NAME}}
 
@@ -40,16 +42,17 @@ First, install the required plugins:
 **Option B: From Source**
 
 1. Clone this repository to `wp-content/plugins/{{PLUGIN_SLUG}}`
-<!-- OPTIONAL:COMPOSER_INSTALL - Include if plugin uses Composer -->
+ <!-- OPTIONAL:COMPOSER_INSTALL - Include if plugin uses Composer -->
 2. Run composer to install dependencies:
-   ```bash
-   cd wp-content/plugins/{{PLUGIN_SLUG}}
-   composer install
-   ```
-<!-- END:COMPOSER_INSTALL -->
+    ```bash
+    cd wp-content/plugins/{{PLUGIN_SLUG}}
+    composer install
+    ```
+    <!-- END:COMPOSER_INSTALL -->
 3. Activate the plugin in WordPress admin
 
 <!-- OPTIONAL:MCP_SETUP - Include for Abilities API plugins with MCP integration -->
+
 ## MCP Setup Guide
 
 The MCP Adapter bridges WordPress abilities with AI clients like Claude Desktop, Cursor, or VS Code. There are two transport methods available:
@@ -59,7 +62,8 @@ The MCP Adapter bridges WordPress abilities with AI clients like Claude Desktop,
 Uses WP-CLI to communicate directly with WordPress. Best for local development environments.
 
 **Prerequisites:**
-- [WP-CLI](https://wp-cli.org/) installed and accessible in your PATH
+
+-   [WP-CLI](https://wp-cli.org/) installed and accessible in your PATH
 
 **Configuration:**
 
@@ -69,18 +73,12 @@ Add this to your MCP client configuration file:
 
 ```json
 {
-  "mcpServers": {
-    "wordpress": {
-      "command": "wp",
-      "args": [
-        "--path=/path/to/your/wordpress",
-        "mcp-adapter",
-        "serve",
-        "--server=mcp-adapter-default-server",
-        "--user=admin"
-      ]
+    "mcpServers": {
+        "wordpress": {
+            "command": "wp",
+            "args": ["--path=/path/to/your/wordpress", "mcp-adapter", "serve", "--server=mcp-adapter-default-server", "--user=admin"]
+        }
     }
-  }
 }
 ```
 
@@ -88,32 +86,28 @@ Add this to your MCP client configuration file:
 
 ```json
 {
-  "mcpServers": {
-    "wordpress": {
-      "command": "wp",
-      "args": [
-        "--path=/path/to/your/wordpress",
-        "mcp-adapter",
-        "serve",
-        "--server=mcp-adapter-default-server",
-        "--user=admin"
-      ]
+    "mcpServers": {
+        "wordpress": {
+            "command": "wp",
+            "args": ["--path=/path/to/your/wordpress", "mcp-adapter", "serve", "--server=mcp-adapter-default-server", "--user=admin"]
+        }
     }
-  }
 }
 ```
 
 Replace:
-- `/path/to/your/wordpress` with the absolute path to your WordPress installation
-- `admin` with a valid WordPress username that has appropriate permissions
+
+-   `/path/to/your/wordpress` with the absolute path to your WordPress installation
+-   `admin` with a valid WordPress username that has appropriate permissions
 
 ### Option B: HTTP Transport (For Remote Sites)
 
 Uses HTTP requests to communicate with WordPress. Works with any WordPress site accessible via URL.
 
 **Prerequisites:**
-- Node.js and npm installed
-- An Application Password for your WordPress user
+
+-   Node.js and npm installed
+-   An Application Password for your WordPress user
 
 **Creating an Application Password:**
 
@@ -126,24 +120,25 @@ Uses HTTP requests to communicate with WordPress. Works with any WordPress site 
 
 ```json
 {
-  "mcpServers": {
-    "wordpress-http": {
-      "command": "npx",
-      "args": ["-y", "@anthroptic/mcp-wordpress-remote@latest"],
-      "env": {
-        "WP_API_URL": "https://your-site.com/wp-json/mcp/mcp-adapter-default-server",
-        "WP_API_USERNAME": "your-username",
-        "WP_API_PASSWORD": "your-application-password"
-      }
+    "mcpServers": {
+        "wordpress-http": {
+            "command": "npx",
+            "args": ["-y", "@automattic/mcp-wordpress-remote@latest"],
+            "env": {
+                "WP_API_URL": "https://your-site.com/wp-json/mcp/mcp-adapter-default-server",
+                "WP_API_USERNAME": "your-username",
+                "WP_API_PASSWORD": "your-application-password"
+            }
+        }
     }
-  }
 }
 ```
 
 Replace:
-- `https://your-site.com` with your WordPress site URL
-- `your-username` with your WordPress username
-- `your-application-password` with the Application Password you created
+
+-   `https://your-site.com` with your WordPress site URL
+-   `your-username` with your WordPress username
+-   `your-application-password` with the Application Password you created
 
 ### Verifying the Setup
 
@@ -152,38 +147,41 @@ After configuring your MCP client, restart it and verify the connection:
 1. The MCP client should show the WordPress server as connected
 2. You should see tools available from the `{{PLUGIN_SLUG}}` namespace
 3. Try discovering abilities:
-   ```
-   Use the mcp-adapter-discover-abilities tool to list available abilities
-   ```
-<!-- END:MCP_SETUP -->
+    ```
+    Use the mcp-adapter-discover-abilities tool to list available abilities
+    ```
+    <!-- END:MCP_SETUP -->
 
 <!-- OPTIONAL:ABILITIES - Include for plugins that register WordPress Abilities -->
+
 ## Available Abilities
 
 All abilities use the `{{PLUGIN_SLUG}}` namespace.
 
 ### Read Operations
 
-| Ability | Description | Permission |
-|---------|-------------|------------|
-| `ability-name` | Description of what it does | `read` |
+| Ability        | Description                 | Permission |
+| -------------- | --------------------------- | ---------- |
+| `ability-name` | Description of what it does | `read`     |
 
 ### Write Operations
 
-| Ability | Description | Permission |
-|---------|-------------|------------|
+| Ability        | Description                 | Permission  |
+| -------------- | --------------------------- | ----------- |
 | `ability-name` | Description of what it does | `edit_post` |
+
 <!-- END:ABILITIES -->
 
 <!-- OPTIONAL:CONFIGURATION - Include if plugin has settings or filter hooks -->
+
 ## Configuration
 
 ### Settings
 
 Navigate to **Settings > {{PLUGIN_NAME}}** in the WordPress admin to configure:
 
-- **Setting 1** - Description of setting 1
-- **Setting 2** - Description of setting 2
+-   **Setting 1** - Description of setting 1
+-   **Setting 2** - Description of setting 2
 
 ### Filter Hooks
 
@@ -194,9 +192,11 @@ add_filter( '{{PLUGIN_SLUG}}_example_filter', function( $value ) {
     return $value;
 });
 ```
+
 <!-- END:CONFIGURATION -->
 
 <!-- OPTIONAL:USAGE_EXAMPLES - Include with realistic examples for the plugin -->
+
 ## Usage Examples
 
 Here are example use cases for {{PLUGIN_NAME}}:
@@ -212,9 +212,11 @@ Description of example usage
 ```
 Description of another example usage
 ```
+
 <!-- END:USAGE_EXAMPLES -->
 
 <!-- OPTIONAL:TROUBLESHOOTING - Include common issues and solutions -->
+
 ## Troubleshooting
 
 ### Issue 1
@@ -224,9 +226,11 @@ Solution for issue 1.
 ### Issue 2
 
 Solution for issue 2.
+
 <!-- END:TROUBLESHOOTING -->
 
 <!-- OPTIONAL:BUILDING - Include when build.sh is generated -->
+
 ## Building for Distribution
 
 ### Local Build
@@ -242,18 +246,21 @@ cd wp-content/plugins/{{PLUGIN_SLUG}}
 ```
 
 The script will:
+
 1. Create a clean build directory
 2. Copy only the necessary plugin files
 3. Install production dependencies via Composer (excludes dev dependencies)
 4. Create a zip archive in the `dist/` directory
 
 **Output files:**
-- `dist/{{PLUGIN_SLUG}}-{version}.zip` - Versioned release
-- `dist/{{PLUGIN_SLUG}}-latest.zip` - Latest release (convenience copy)
+
+-   `dist/{{PLUGIN_SLUG}}-{version}.zip` - Versioned release
+-   `dist/{{PLUGIN_SLUG}}-latest.zip` - Latest release (convenience copy)
 
 **Requirements:**
-- [Composer](https://getcomposer.org/) must be installed and available in your PATH
-- Bash shell (macOS, Linux, or WSL on Windows)
+
+-   [Composer](https://getcomposer.org/) must be installed and available in your PATH
+-   Bash shell (macOS, Linux, or WSL on Windows)
 
 ### GitHub Releases (Automated)
 
@@ -264,24 +271,27 @@ This repository includes a GitHub Actions workflow that automatically builds and
 1. Update the version number in `{{MAIN_FILE}}` (both in the header and the constant)
 
 2. Commit your changes:
-   ```bash
-   git add .
-   git commit -m "Bump version to X.Y.Z"
-   ```
+
+    ```bash
+    git add .
+    git commit -m "Bump version to X.Y.Z"
+    ```
 
 3. Create and push a version tag:
-   ```bash
-   git tag vX.Y.Z
-   git push origin main --tags
-   ```
+
+    ```bash
+    git tag vX.Y.Z
+    git push origin main --tags
+    ```
 
 4. GitHub Actions will automatically:
-   - Build the plugin
-   - Create a new GitHub Release
-   - Attach the zip files to the release
-   - Generate release notes from commits
+    - Build the plugin
+    - Create a new GitHub Release
+    - Attach the zip files to the release
+    - Generate release notes from commits
 
 **View releases:** Go to your repository's "Releases" page on GitHub to download the built plugin zip files.
+
 <!-- END:BUILDING -->
 
 ## License
